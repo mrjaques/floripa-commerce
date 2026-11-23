@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Achados da Casa | Seleção de produtos na Shopee</title>
+<meta name="description" content="Produtos selecionados à mão com os melhores preços da Shopee. Clique e compre direto no site ou app.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;800&family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#EEF2F1; --surface:#FFFFFF; --ink:#12302D; --muted:#5B706D;
+  --brand:#0F4C47; --accent:#FFC233; --accent-ink:#2B2000; --line:#D5DFDD; --sale:#C8372D;
+}
+*{box-sizing:border-box;margin:0}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',system-ui,sans-serif;background:var(--bg);color:var(--ink);line-height:1.5}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.wrap{max-width:1180px;margin:0 auto;padding:0 20px}
+
+header{background:var(--brand);color:#fff;padding:28px 0 32px}
+.top{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.logo{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:1.5rem;text-decoration:none;letter-spacing:-.02em}
+.logo span{background:var(--accent);color:var(--accent-ink);padding:0 8px;border-radius:6px;margin-right:2px}
+.hero{padding-top:36px;max-width:640px}
+h1{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:clamp(2rem,5vw,3.2rem);line-height:1.05;letter-spacing:-.03em}
+.hero p{margin-top:12px;color:#CFE3E0;font-size:1.05rem}
+.search{margin-top:24px;display:flex;background:#fff;border-radius:12px;overflow:hidden;max-width:520px}
+.search input{flex:1;border:0;padding:14px 16px;font:inherit;color:var(--ink);min-width:0}
+.search input:focus{outline:none}
+.search:focus-within{box-shadow:0 0 0 3px var(--accent)}
+
+.chips{display:flex;gap:8px;overflow-x:auto;padding:20px 0 6px;scrollbar-width:thin}
+.chip{flex:none;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);padding:8px 16px;border-radius:999px;font:inherit;font-weight:500;cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--brand);border-color:var(--brand);color:#fff}
+.count{color:var(--muted);font-size:.92rem;padding:10px 0 14px}
+
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:18px;padding-bottom:56px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;overflow:hidden;display:flex;flex-direction:column;text-decoration:none;transition:transform .15s,border-color .15s}
+.card:hover{transform:translateY(-3px);border-color:var(--brand)}
+.thumb{position:relative;aspect-ratio:1/1;background:#E3EBEA;display:grid;place-items:center;font-size:3.5rem}
+.thumb img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.badge{position:absolute;top:10px;left:10px;background:var(--sale);color:#fff;font-weight:700;font-size:.8rem;padding:3px 9px;border-radius:6px}
+.body{padding:14px 16px 16px;display:flex;flex-direction:column;gap:6px;flex:1}
+.cat{font-size:.8rem;color:var(--muted)}
+.name{font-weight:500;line-height:1.3;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.prices{margin-top:auto;padding-top:6px;display:flex;align-items:baseline;gap:8px;flex-wrap:wrap}
+.price{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:1.4rem}
+.old{color:var(--muted);text-decoration:line-through;font-size:.9rem}
+.buy{margin-top:8px;background:var(--accent);color:var(--accent-ink);font-weight:700;text-align:center;padding:11px;border-radius:10px}
+.card:hover .buy{filter:brightness(.95)}
+.empty{grid-column:1/-1;text-align:center;padding:48px 0;color:var(--muted)}
+
+
+.banner{position:relative;margin-top:24px;border-radius:18px;overflow:hidden;color:#fff;background:#222}
+.slide{display:none;min-height:300px;padding:40px clamp(22px,5vw,56px) 56px;background-size:cover;background-position:center;flex-direction:column;justify-content:flex-end;gap:10px}
+.slide.on{display:flex}
+.slide::before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(0,0,0,.55),rgba(0,0,0,0) 70%);pointer-events:none}
+.slide>*{position:relative;max-width:560px}
+.tag{align-self:flex-start;background:var(--accent);color:var(--accent-ink);font-weight:700;font-size:.82rem;padding:3px 10px;border-radius:6px}
+.slide h2{font-family:'Bricolage Grotesque',sans-serif;font-weight:800;font-size:clamp(1.9rem,5vw,3.2rem);line-height:1.02;letter-spacing:-.03em}
+.slide p{font-size:1.02rem;opacity:.92}
+.cta{align-self:flex-start;margin-top:6px;background:#fff;color:#111;font:inherit;font-weight:700;padding:11px 20px;border-radius:10px;border:0;cursor:pointer;text-decoration:none}
+.cta:hover{background:var(--accent)}
+.nav{position:absolute;right:18px;bottom:16px;display:flex;align-items:center;gap:8px}
+.dot{width:10px;height:10px;border-radius:50%;border:0;background:rgba(255,255,255,.45);cursor:pointer;padding:0}
+.dot[aria-current="true"]{background:#fff;width:26px;border-radius:6px}
+.arrow{width:34px;height:34px;border-radius:50%;border:0;background:rgba(255,255,255,.22);color:#fff;font-size:1.1rem;cursor:pointer}
+.arrow:hover{background:rgba(255,255,255,.4)}
+
+footer{background:var(--ink);color:#B9CBC8;padding:32px 0;font-size:.9rem}
+footer p{max-width:720px}
+footer p+p{margin-top:8px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}html{scroll-behavior:auto}}
+@media (max-width:480px){.grid{grid-template-columns:repeat(2,1fr);gap:12px}.body{padding:10px 12px 12px}.price{font-size:1.15rem}.thumb{font-size:2.6rem}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap">
+    <div class="top"><a class="logo" href="#"><span>Achados</span>da Casa</a></div>
+    <div class="hero">
+      <h1>Produtos escolhidos a dedo, com o melhor preço da Shopee.</h1>
+      <p>Encontre o que precisa, clique e finalize a compra direto no site ou app da Shopee.</p>
+      <label class="search">
+        <span style="position:absolute;left:-9999px">Buscar produtos</span>
+        <input id="q" type="search" placeholder="Buscar produto…" autocomplete="off">
+      </label>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+  <section class="banner" id="banner" aria-roledescription="carrossel" aria-label="Destaques"></section>
+</div>
+
+<main class="wrap" id="produtos">
+  <div class="chips" id="chips" role="group" aria-label="Categorias"></div>
+  <p class="count" id="count" aria-live="polite"></p>
+  <section class="grid" id="grid"></section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <p><strong>Aviso de afiliado:</strong> este site participa do Programa de Afiliados da Shopee. Ao comprar pelos links, podemos receber uma comissão, sem nenhum custo extra para você.</p>
+    <p>Preços e disponibilidade podem mudar a qualquer momento. Confira sempre os valores finais na Shopee. Não somos a loja vendedora e não processamos pagamentos.</p>
+    <p>© <span id="year"></span> Achados da Casa</p>
+  </div>
+</footer>
+
+<script>
+/* ============================================================
+   EDITE AQUI: seus produtos
+   - link:  seu link de afiliado da Shopee (ex.: https://s.shopee.com.br/xxxxx)
+   - image: URL da imagem do produto (deixe "" para mostrar o emoji)
+   - price / old: números (old é opcional, gera o selo de desconto)
+   ============================================================ */
+let PRODUCTS = [
+  { name:"Fone Bluetooth sem fio com cancelamento de ruído", category:"Eletrônicos", price:49.90, old:99.90, emoji:"🎧", image:"", link:"https://s.shopee.com.br/SEU_LINK_1" },
+  { name:"Luminária LED de mesa recarregável USB", category:"Casa", price:34.90, old:59.90, emoji:"💡", image:"", link:"https://s.shopee.com.br/SEU_LINK_2" },
+  { name:"Kit 6 potes herméticos de vidro com tampa", category:"Cozinha", price:69.90, old:119.90, emoji:"🥡", image:"", link:"https://s.shopee.com.br/SEU_LINK_3" },
+  { name:"Garrafa térmica inox 750ml", category:"Cozinha", price:39.90, old:0, emoji:"🧉", image:"", link:"https://s.shopee.com.br/SEU_LINK_4" },
+  { name:"Organizador de cabos de mesa com 5 slots", category:"Casa", price:12.90, old:24.90, emoji:"🔌", image:"", link:"https://s.shopee.com.br/SEU_LINK_5" },
+  { name:"Mochila impermeável para notebook 15,6\"", category:"Acessórios", price:89.90, old:149.90, emoji:"🎒", image:"", link:"https://s.shopee.com.br/SEU_LINK_6" },
+  { name:"Suporte articulado para celular", category:"Eletrônicos", price:19.90, old:39.90, emoji:"📱", image:"", link:"https://s.shopee.com.br/SEU_LINK_7" },
+  { name:"Controle sem fio para console e PC", category:"Especial GTA", price:129.90, old:199.90, emoji:"🎮", image:"", link:"https://s.shopee.com.br/SEU_LINK_GTA1" },
+  { name:"Headset gamer com microfone e som surround", category:"Especial GTA", price:89.90, old:159.90, emoji:"🎧", image:"", link:"https://s.shopee.com.br/SEU_LINK_GTA2" },
+  { name:"Mousepad gamer extra grande 90x40cm", category:"Especial GTA", price:29.90, old:59.90, emoji:"🖱️", image:"", link:"https://s.shopee.com.br/SEU_LINK_GTA3" },
+  { name:"Camiseta estampada estilo urbano", category:"Especial GTA", price:44.90, old:0, emoji:"👕", image:"", link:"https://s.shopee.com.br/SEU_LINK_GTA4" },
+  { name:"Relógio digital esportivo à prova d'água", category:"Acessórios", price:54.90, old:0, emoji:"⌚", image:"", link:"https://s.shopee.com.br/SEU_LINK_8" }
+];
+/* ============================================================ */
+
+
+/* ============================================================
+   EDITE AQUI: banners do topo
+   - tag, title, text, cta: textos
+   - image: URL de imagem de fundo (opcional, use sua própria arte)
+   - bg: degradê de fundo usado quando não há imagem
+   - category: ao clicar, filtra essa categoria dos produtos
+   - href: use no lugar de category para abrir um link externo
+   ============================================================ */
+const BANNERS = [
+  { tag:"Especial do mês", title:"Prepare seu setup para o novo GTA", text:"Controles, headsets, mousepads e mais, selecionados na Shopee.", cta:"Ver produtos gamer", category:"Especial GTA", image:"", bg:"linear-gradient(135deg,#2A0F4C,#B3267A 55%,#FF8A3D)" },
+  { tag:"Ofertas", title:"Achados com até 50% de desconto", text:"Confira a seleção completa da loja.", cta:"Ver todos", category:"Todos", image:"", bg:"linear-gradient(135deg,#0F4C47,#1E7F76)" }
+];
+
+const $ = id => document.getElementById(id);
+const brl = n => n.toLocaleString('pt-BR',{style:'currency',currency:'BRL'});
+const norm = s => s.normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase();
+let cat = 'Todos', term = '';
+
+function buildChips(){
+  const cats = ['Todos', ...new Set(PRODUCTS.map(p => p.category))];
+  if(!cats.includes(cat)) cat = 'Todos';
+  $('chips').innerHTML = cats.map(c =>
+    `<button class="chip" type="button" data-c="${esc(c)}" aria-pressed="${c===cat}">${esc(c)}</button>`).join('');
+}
+$('chips').addEventListener('click', e => {
+  const b = e.target.closest('.chip'); if(b) setCat(b.dataset.c);
+});
+$('q').addEventListener('input', e => { term = norm(e.target.value.trim()); render(); });
+
+function esc(s){ return String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+function render(){
+  const list = PRODUCTS.filter(p =>
+    (cat==='Todos' || p.category===cat) && norm(p.name+' '+p.category).includes(term));
+  $('count').textContent = list.length + (list.length===1 ? ' produto' : ' produtos');
+  if(!list.length){
+    $('grid').innerHTML = '<p class="empty">Nenhum produto encontrado. Tente outra palavra ou escolha outra categoria.</p>';
+    return;
+  }
+  $('grid').innerHTML = list.map(p => {
+    const off = p.old > p.price ? Math.round((1 - p.price/p.old)*100) : 0;
+    const img = p.image ? `<img src="${esc(p.image)}" alt="" loading="lazy" onerror="this.remove()">` : '';
+    return `<a class="card" href="${esc(p.link)}" target="_blank" rel="sponsored noopener noreferrer">
+      <div class="thumb"><span aria-hidden="true">${p.emoji||'🛍️'}</span>${img}${off?`<span class="badge">-${off}%</span>`:''}</div>
+      <div class="body">
+        <span class="cat">${esc(p.category)}</span>
+        <span class="name">${esc(p.name)}</span>
+        <div class="prices"><span class="price">${brl(p.price)}</span>${off?`<span class="old">${brl(p.old)}</span>`:''}</div>
+        <span class="buy">Ver na Shopee</span>
+      </div></a>`;
+  }).join('');
+}
+
+/* ---------- Banner ---------- */
+(function(){
+  const el = $('banner'); let cur = 0, timer;
+  el.innerHTML = BANNERS.map((b,i) => {
+    const bgs = b.image ? `url('${esc(b.image)}') center/cover, ${b.bg||'#222'}` : (b.bg||'#222');
+    const action = b.href
+      ? `<a class="cta" href="${esc(b.href)}" target="_blank" rel="sponsored noopener noreferrer">${esc(b.cta)}</a>`
+      : `<button class="cta" type="button" data-cat="${esc(b.category||'Todos')}">${esc(b.cta)}</button>`;
+    return `<div class="slide${i?'':' on'}" style="background:${bgs}" role="group" aria-roledescription="slide" aria-label="${i+1} de ${BANNERS.length}">
+      ${b.tag?`<span class="tag">${esc(b.tag)}</span>`:''}<h2>${esc(b.title)}</h2><p>${esc(b.text||'')}</p>${action}</div>`;
+  }).join('') + (BANNERS.length>1 ? `<div class="nav">
+      <button class="arrow" type="button" data-d="-1" aria-label="Banner anterior">‹</button>
+      ${BANNERS.map((_,i)=>`<button class="dot" type="button" data-i="${i}" aria-label="Ir para o banner ${i+1}" aria-current="${i===0}"></button>`).join('')}
+      <button class="arrow" type="button" data-d="1" aria-label="Próximo banner">›</button></div>` : '');
+  const slides = el.querySelectorAll('.slide'), dots = el.querySelectorAll('.dot');
+  function go(i){
+    cur = (i + slides.length) % slides.length;
+    slides.forEach((s,k) => s.classList.toggle('on', k===cur));
+    dots.forEach((d,k) => d.setAttribute('aria-current', k===cur));
+  }
+  function play(){
+    if(slides.length<2 || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    clearInterval(timer); timer = setInterval(() => go(cur+1), 6000);
+  }
+  el.addEventListener('click', e => {
+    const a = e.target.closest('.arrow'), d = e.target.closest('.dot'), c = e.target.closest('[data-cat]');
+    if(a) go(cur + Number(a.dataset.d));
+    if(d) go(Number(d.dataset.i));
+    if(c){ setCat(c.dataset.cat); $('produtos').scrollIntoView({behavior:'smooth'}); }
+    if(a||d) play();
+  });
+  el.addEventListener('mouseenter', () => clearInterval(timer));
+  el.addEventListener('mouseleave', play);
+  el.addEventListener('focusin', () => clearInterval(timer));
+  play();
+})();
+
+$('year').textContent = new Date().getFullYear();
+$('grid').innerHTML = '<p class="empty">Carregando produtos…</p>';
+/* Produtos vêm do painel (/admin.html). Se a API não existir (abrindo o arquivo local), usa a lista de exemplo acima. */
+fetch('/api/products').then(r => r.ok ? r.json() : Promise.reject())
+  .then(d => { if(Array.isArray(d)) PRODUCTS = d; })
+  .catch(() => {})
+  .finally(() => { buildChips(); render(); });
+</script>
+</body>
+</html>
